@@ -84,49 +84,44 @@ final class Tiny_Slider{
      * @param $argument
      * @param $content
      */
-    public function tinys_shortcode_slider( $argument, $content ) {
-        $default_argument = array(
-            'height'    => '480',
-            'width'     => '600',
-            'id'        => '',
+    public function tinys_shortcode_slider( $arguments, $content ) {
+        $defaults   = array(
+            'width'  => 800,
+            'height' => 600,
         );
-        $attributes     = shortcode_atts( $default_argument, $argument );
-        $content        = do_shortcode( $content );
+        $attributes = shortcode_atts( $defaults, $arguments );
+        $content    = do_shortcode( $content );
 
-        $shortcode_outpur  = <<<EOD
-        <div id="{$attributes['id']}" style="width: {$attributes['width']}; height:{$attributes['height']}">
-            <div class="my-slider">
-                {$content}
-            </div>
+        $shortcode_output = <<<EOD
+        <div style="width:{$attributes['width']};height:{$attributes['height']}">
+	        <div class="slider">
+	            {$content}
+	        </div>
         </div>
 EOD;
+        return $shortcode_output;
 
     }
 
-    public function tinys_shortcode_slide( $argument ) {
-        $default_argument = array(
-            'caption'  => '',
-            'size'     => 'large',
-            'id'       => '',
+    public function tinys_shortcode_slide( $arguments ) {
+        $defaults   = array(
+            'caption'   => '',
+            'id'        => '',
+            'size'      =>'tiny-slider'
         );
-        $attributes    = shortcode_atts( $default_argument, $argument );
-        $image_src     = wp_get_attachment_image_src( $attributes['id'], $attributes['size'] );
+        $attributes = shortcode_atts( $defaults, $arguments );
 
-        if( is_array( $image_src ) ) {
-            $img = $image_src[0];
-        }
+        $image_src  = wp_get_attachment_image_src( $attributes['id'], $attributes['size'] );
 
-//      $img            = $image_src[0];
+//        var_dump($image_src);
 
-        $shortcode_output  = <<<EOD
-
-        <div class="my-slide">
-            <p><img src="{$img}"></p>
-            <p>{$attributes['caption']}></p>
-        </div>
+        $shorcode_output = <<<EOD
+            <div class='slide'>
+                <p><img src="{$image_src[0]}" alt="{$attributes['caption']}"></p>
+                <p>{$attributes['caption']}</p>
+            </div>
 EOD;
-
-        return $shortcode_output;
+        return $shorcode_output;
     }
 
 
